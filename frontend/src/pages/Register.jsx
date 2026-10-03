@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
+// ✨ IMPORTANT: Update this fallback URL to your exact Render backend URL 
+// (e.g., 'https://govspark-backend-abcd.onrender.com') if you haven't set VITE_API_BASE_URL
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://YOUR-RENDER-BACKEND-NAME.onrender.com';
+
 export default function Register() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
@@ -19,6 +23,7 @@ export default function Register() {
     const [timer, setTimer] = useState(60);
     const [timerActive, setTimerActive] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     // DPIIT Mock API States
     const [verifyingDpiit, setVerifyingDpiit] = useState(false);
@@ -63,15 +68,28 @@ export default function Register() {
         }
 
         setErrorMessage('');
+        setSuccessMessage('');
         setLoading(true);
 
         try {
-            await axios.post('http://127.0.0.1:8000/api/auth/send-otp/', { email: formData.email });
+            // Updated to point to the live Render backend
+            const res = await axios.post(`${API_URL}/api/auth/send-registration-otp/`, { email: formData.email });
+
+            // ✨ Hackathon Fallback: If backend returns a demo OTP because email failed, auto-fill it
+            if (res.data.debug_otp && !res.data.email_dispatched) {
+                console.warn("Using Hackathon Demo OTP:", res.data.debug_otp);
+                setFormData(prev => ({ ...prev, otp: res.data.debug_otp }));
+                setSuccessMessage("Live email dispatch bypassed. Demo OTP auto-filled for presentation.");
+            } else {
+                setSuccessMessage("OTP sent successfully! Please check your inbox.");
+            }
+
             setStep(2);
             setTimer(60);
             setTimerActive(true);
         } catch (err) {
-            setErrorMessage(err.response?.data?.error || 'Failed to send OTP.');
+            setErrorMessage(err.response?.data?.error || 'Failed to send OTP. Check console or network tab.');
+            console.error("OTP Error:", err);
         } finally {
             setLoading(false);
         }
@@ -83,13 +101,16 @@ export default function Register() {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/auth/register/', formData);
+            // ✨ Corrected API endpoint to match the unified verify_and_register view in Django
+            const response = await axios.post(`${API_URL}/api/auth/register/`, formData);
+
+            // Store user data and redirect
             localStorage.setItem('user', JSON.stringify(response.data.user));
             alert("Registration successful!");
             navigate('/');
             window.location.reload();
         } catch (err) {
-            setErrorMessage(err.response?.data?.error || 'Registration failed.');
+            setErrorMessage(err.response?.data?.error || 'Registration failed. Invalid or expired OTP.');
         } finally {
             setLoading(false);
         }
@@ -103,6 +124,12 @@ export default function Register() {
             {errorMessage && (
                 <div className="p-3 mb-4 text-sm bg-red-100 dark:bg-red-900/30 text-red-600 rounded">
                     {errorMessage}
+                </div>
+            )}
+
+            {successMessage && (
+                <div className="p-3 mb-4 text-sm bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded">
+                    {successMessage}
                 </div>
             )}
 

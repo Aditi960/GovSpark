@@ -23,7 +23,7 @@ from google import genai
 
 from .models import Startup, Challenge, Proposal, EmailOTP, UserProfile
 from .serializers import StartupSerializer, ChallengeSerializer, ProposalSerializer
-from .models import OTPVerification
+
 
 # ==========================================
 # Helper: Reusable PDF Generator

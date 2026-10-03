@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* GovSpark Official Theme - Light Mode */
+    --bg: #ffffff;
+    --social-bg: #f8fafc;
+    --code-bg: #f1f5f9;
+    --border: #e2e8f0;
+
+    --text: #334155;
+    --text-h: #0f172a;
+
+    /* Indian Govt Accent Colors */
+    --accent: #1e3a8a;
+    /* Deep Navy Blue */
+    --accent-hover: #1e40af;
+    --accent-bg: #eff6ff;
+    --accent-border: rgba(30, 58, 138, 0.5);
+
+    --saffron: #ea580c;
+    --india-green: #15803d;
+
+    --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* GovSpark Official Theme - Dark Mode */
+      --bg: #0f172a;
+      /* Deep Slate */
+      --social-bg: #1e293b;
+      --code-bg: #0b1120;
+      --border: #334155;
+
+      --text: #cbd5e1;
+      --text-h: #f8fafc;
+
+      --accent: #60a5fa;
+      /* Lighter Blue for visibility */
+      --accent-hover: #93c5fd;
+      --accent-bg: rgba(96, 165, 250, 0.15);
+      --accent-border: rgba(96, 165, 250, 0.5);
+
+      --saffron: #f97316;
+      --india-green: #22c55e;
+
+      --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    }
+
+    #social .button-icon {
+      filter: invert(1) brightness(2);
+    }
+
+    body {
+      /* Dark mode subtle background dots */
+      background-image: radial-gradient(#334155 1px, transparent 1px) !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    /* Subtle patterned background */
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 145%;
+    letter-spacing: 0.18px;
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      font-size: 18px;
+    }
+  }
+
+  h1,
+  h2 {
+    font-weight: 500;
+    color: var(--text-h);
+    font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 36px;
+    letter-spacing: -1.68px;
+  }
+
+  @media (min-width: 1024px) {
+    h1 {
+      margin-top: 32px;
+      margin-bottom: 32px;
+      font-size: 56px;
+    }
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 20px;
+    line-height: 118%;
+    letter-spacing: -0.24px;
+  }
+
+  @media (min-width: 1024px) {
+    h2 {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  code,
+  .counter {
+    display: inline-flex;
+    border-radius: 4px;
+    color: var(--text-h);
+    font-family: ui-monospace, Consolas, monospace;
+  }
+
+  code {
+    padding: 4px 8px;
+    font-size: 15px;
+    line-height: 135%;
+    background-color: var(--code-bg);
+  }
+}
+
+/* Specific layout for the React root div */
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* Updated borders to use the theme variable */
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  /* Added a subtle shadow to the main container for a premium feel */
+  box-shadow: var(--shadow);
+  background-color: var(--bg);
+}

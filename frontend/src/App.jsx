@@ -14,6 +14,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import AuditLedger from "./pages/AuditLedger";
 import Sandbox from "./pages/Sandbox";
 import Landing from "./pages/Landing"; // NEW IMPORT
+import axios from 'axios';
 
 function DashboardHome() {
   const [user, setUser] = useState(null);
@@ -79,5 +80,13 @@ function App() {
     </BrowserRouter>
   );
 }
+axios.interceptors.request.use((config) => {
+  const liveBackendUrl = "https://govspark-backend.onrender.com"; // Paste your Render URL here
+  if (config.url && config.url.includes("127.0.0.1:8000")) {
+    config.url = config.url.replace("http://127.0.0.1:8000", liveBackendUrl);
+  }
+  return config;
+});
+
 
 export default App;

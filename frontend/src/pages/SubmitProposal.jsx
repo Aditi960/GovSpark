@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { apiUrl } from '../utils/api';
 
 export default function SubmitProposal() {
     const { challengeId } = useParams();
@@ -12,7 +13,7 @@ export default function SubmitProposal() {
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/challenges/${challengeId}/`)
+        axios.get(apiUrl(`/api/challenges/${challengeId}/`))
             .then(res => setChallenge(res.data))
             .catch(err => console.error(err));
     }, [challengeId]);
@@ -20,7 +21,7 @@ export default function SubmitProposal() {
     const handleAskAI = async () => {
         setDrafting(true);
         try {
-            const res = await axios.get(`http://127.0.0.1:8000/api/challenges/${challengeId}/draft/`);
+            const res = await axios.get(apiUrl(`/api/challenges/${challengeId}/draft/`));
             setAiDraft(res.data.draft);
         } catch (error) {
             alert("AI Drafting failed.");
@@ -49,7 +50,7 @@ export default function SubmitProposal() {
         };
 
         try {
-            await axios.post('http://127.0.0.1:8000/api/proposals/', payload);
+            await axios.post(apiUrl('/api/proposals/'), payload);
             alert("Proposal submitted successfully!");
             navigate('/');
         } catch (error) {

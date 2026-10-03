@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../utils/api';
 
 export default function AuditLedger() {
     const [ledgerEntries, setLedgerEntries] = useState([]);
@@ -7,7 +8,7 @@ export default function AuditLedger() {
     useEffect(() => {
         const fetchLedger = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/proposals/');
+                const response = await axios.get(apiUrl('/api/proposals/'));
                 const entries = [];
 
                 response.data.forEach(proposal => {

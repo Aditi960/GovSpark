@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { apiUrl } from '../utils/api';
 
 export default function Challenges() {
     const [challenges, setChallenges] = useState([]);
@@ -8,7 +9,7 @@ export default function Challenges() {
     const [translatingId, setTranslatingId] = useState(null);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/challenges/')
+        axios.get(apiUrl('/api/challenges/'))
             .then(res => setChallenges(res.data))
             .catch(err => console.error(err));
     }, []);
@@ -24,7 +25,7 @@ export default function Challenges() {
 
         setTranslatingId(id);
         try {
-            const res = await axios.post('http://127.0.0.1:8000/api/marathi/', { text });
+            const res = await axios.post(apiUrl('/api/marathi/'), { text });
             setTranslations({ ...translations, [id]: res.data.marathi_text });
         } catch (error) {
             alert("Translation failed.");

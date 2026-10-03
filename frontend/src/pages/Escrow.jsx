@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../utils/api';
 
 export default function Escrow() {
     const [proposals, setProposals] = useState([]);
@@ -11,7 +12,7 @@ export default function Escrow() {
 
     const fetchProposals = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/proposals/');
+            const response = await axios.get(apiUrl('/api/proposals/'));
             setProposals(response.data);
             setLoading(false);
         } catch (error) {
@@ -28,7 +29,7 @@ export default function Escrow() {
         updatedMilestones[milestoneIndex].status = "Released";
 
         try {
-            await axios.patch(`http://127.0.0.1:8000/api/proposals/${proposalId}/`, {
+            await axios.patch(apiUrl(`/api/proposals/${proposalId}/`), {
                 milestones: updatedMilestones,
                 status: "Approved for Pilot" // Matches choices in models.py
             });
@@ -85,7 +86,7 @@ export default function Escrow() {
                                                         ✓ Funds Released
                                                     </span>
                                                     <a
-                                                        href={`http://127.0.0.1:8000/api/proposals/${proposal.id}/agreement/`}
+                                                        href={apiUrl(`/api/proposals/${proposal.id}/agreement/`)}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="px-4 py-2 text-sm font-medium rounded bg-accent text-white hover:opacity-90 transition-opacity no-underline flex items-center gap-2"

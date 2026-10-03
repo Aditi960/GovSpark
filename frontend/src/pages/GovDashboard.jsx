@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { apiUrl } from '../utils/api';
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'];
 
@@ -20,8 +21,8 @@ export default function GovDashboard({ user }) {
         const fetchData = async () => {
             try {
                 const [chalRes, propRes] = await Promise.all([
-                    axios.get('http://127.0.0.1:8000/api/challenges/'),
-                    axios.get('http://127.0.0.1:8000/api/proposals/')
+                    axios.get(apiUrl('/api/challenges/')),
+                    axios.get(apiUrl('/api/proposals/'))
                 ]);
 
                 setStats({
@@ -35,7 +36,7 @@ export default function GovDashboard({ user }) {
                 for (let prop of propRes.data.slice(0, 3)) {
                     if (!scores[prop.startup_name]) {
                         try {
-                            const res = await axios.get(`http://127.0.0.1:8000/api/startups/${prop.startup_name}/trust/`);
+                            const res = await axios.get(apiUrl(`/api/startups/${prop.startup_name}/trust/`));
                             scores[prop.startup_name] = res.data;
                         } catch (err) {
                             console.error("Failed to fetch trust score", err);
@@ -67,7 +68,7 @@ export default function GovDashboard({ user }) {
     const handleEvaluateAI = async (id) => {
         setEvaluatingId(id);
         try {
-            const res = await axios.post(`http://127.0.0.1:8000/api/proposals/${id}/evaluate/`);
+            const res = await axios.post(apiUrl(`/api/proposals/${id}/evaluate/`));
             setRecentProposals(recentProposals.map(p =>
                 p.id === id ? { ...p, ai_score: res.data.score, ai_summary: res.data.summary } : p
             ));
@@ -81,7 +82,7 @@ export default function GovDashboard({ user }) {
     const handleDpdpScan = async (id) => {
         setScanningDpdpId(id);
         try {
-            const res = await axios.post(`http://127.0.0.1:8000/api/proposals/${id}/dpdp-scan/`);
+            const res = await axios.post(apiUrl(`/api/proposals/${id}/dpdp-scan/`));
             setDpdpResults(prev => ({ ...prev, [id]: res.data }));
         } catch (error) {
             alert("DPDP Scan failed.");
@@ -97,7 +98,7 @@ export default function GovDashboard({ user }) {
                     <h1 className="mt-0 text-3xl">Govt. Administration Portal</h1>
                     <p className="m-0 opacity-80">Nodal Officer: {user.name} | Maharashtra State Innovation Society</p>
                 </div>
-                <a href="http://127.0.0.1:8000/api/reports/export/" download className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 transition-colors no-underline flex items-center gap-2">
+                <a href={apiUrl('/api/reports/export/')} download className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 transition-colors no-underline flex items-center gap-2">
                     📊 Download CSV Report
                 </a>
             </div>
@@ -210,7 +211,7 @@ export default function GovDashboard({ user }) {
 
                                             {/* GeM Scale-Up Button */}
                                             <a
-                                                href={`http://127.0.0.1:8000/api/proposals/${prop.id}/gem-export/`}
+                                                href={apiUrl(`/api/proposals/${prop.id}/gem-export/`)}
                                                 download
                                                 className="inline-flex w-full justify-center px-3 py-1.5 text-xs bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors no-underline items-center gap-2 mt-2"
                                             >

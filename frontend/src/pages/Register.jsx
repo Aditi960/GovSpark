@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-
-// ✨ IMPORTANT: Update this fallback URL to your exact Render backend URL 
-// (e.g., 'https://govspark-backend-abcd.onrender.com') if you haven't set VITE_API_BASE_URL
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://YOUR-RENDER-BACKEND-NAME.onrender.com';
+import { apiUrl } from '../utils/api';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -73,7 +70,7 @@ export default function Register() {
 
         try {
             // Updated to point to the live Render backend
-            const res = await axios.post(`${API_URL}/api/auth/send-registration-otp/`, { email: formData.email });
+            const res = await axios.post(apiUrl('/api/auth/send-registration-otp/'), { email: formData.email });
 
             // ✨ Hackathon Fallback: If backend returns a demo OTP because email failed, auto-fill it
             if (res.data.debug_otp && !res.data.email_dispatched) {
@@ -102,7 +99,7 @@ export default function Register() {
 
         try {
             // ✨ Corrected API endpoint to match the unified verify_and_register view in Django
-            const response = await axios.post(`${API_URL}/api/auth/register/`, formData);
+            const response = await axios.post(apiUrl('/api/auth/register/'), formData);
 
             // Store user data and redirect
             localStorage.setItem('user', JSON.stringify(response.data.user));

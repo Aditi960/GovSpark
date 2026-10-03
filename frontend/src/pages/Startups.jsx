@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { apiUrl } from '../utils/api';
 
 export default function Startups() {
     const [startups, setStartups] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/startups/')
+        axios.get(apiUrl('/api/startups/'))
             .then(response => {
                 setStartups(response.data);
                 setLoading(false);

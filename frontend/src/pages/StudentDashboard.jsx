@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { apiUrl } from '../utils/api';
 
 export default function StudentDashboard({ user }) {
     const [myProposals, setMyProposals] = useState([]);
@@ -8,7 +9,7 @@ export default function StudentDashboard({ user }) {
     useEffect(() => {
         const fetchProposals = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/proposals/');
+                const response = await axios.get(apiUrl('/api/proposals/'));
                 // Filter proposals to show only this team's submissions
                 // Using organization name or falling back to a demo filter
                 const teamProposals = response.data.filter(p => p.startup_name.includes(user.organization || 'ReGen'));

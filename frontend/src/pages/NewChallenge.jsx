@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../utils/api';
 
 export default function NewChallenge() {
     const [rawText, setRawText] = useState('');
@@ -15,7 +16,7 @@ export default function NewChallenge() {
         setAiResult(null);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/translate/', {
+            const response = await axios.post(apiUrl('/api/translate/'), {
                 raw_text: rawText
             });
             setAiResult(response.data);
@@ -41,7 +42,7 @@ export default function NewChallenge() {
                 status: "Open for Proposals"
             };
 
-            await axios.post('http://127.0.0.1:8000/api/challenges/', payload);
+            await axios.post(apiUrl('/api/challenges/'), payload);
 
             navigate('/challenges');
         } catch (error) {

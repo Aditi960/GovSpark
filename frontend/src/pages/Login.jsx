@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { apiUrl } from '../utils/api';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/auth/login/', formData);
+            const response = await axios.post(apiUrl('/api/auth/login/'), formData);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             navigate('/');
             window.location.reload();

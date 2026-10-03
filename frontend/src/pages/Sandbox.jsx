@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../utils/api';
 
 export default function Sandbox() {
     const [approvedPilots, setApprovedPilots] = useState([]);
@@ -12,7 +13,7 @@ export default function Sandbox() {
                 const userStr = localStorage.getItem('user');
                 const user = userStr ? JSON.parse(userStr) : { organization: 'ReGen Coders' };
 
-                const response = await axios.get('http://127.0.0.1:8000/api/proposals/');
+                const response = await axios.get(apiUrl('/api/proposals/'));
                 const myApproved = response.data.filter(p =>
                     p.startup_name.includes(user.organization || user.name) &&
                     p.status === 'Approved for Pilot'
@@ -58,7 +59,7 @@ export default function Sandbox() {
                                     <p className="text-sm opacity-70 m-0 mt-1">Status: Active Pilot Container</p>
                                 </div>
                                 <a
-                                    href={`http://127.0.0.1:8000/api/proposals/${pilot.id}/sandbox/`}
+                                    href={apiUrl(`/api/proposals/${pilot.id}/sandbox/`)}
                                     className="px-4 py-2 bg-accent text-white text-sm font-medium rounded hover:opacity-90 transition-opacity no-underline flex items-center gap-2"
                                 >
                                     ⬇️ Download Anonymized CSV

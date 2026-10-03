@@ -111,6 +111,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # NEW: Required by Render/Whitenoise to collect static files during deployment
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+# NEW: Enables compression and caching for static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Default primary key field type
+# NEW: Required by Django to prevent migration warnings
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # CORS Configuration

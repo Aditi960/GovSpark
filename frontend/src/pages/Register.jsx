@@ -70,7 +70,7 @@ export default function Register() {
 
         try {
             // Updated to point to the live Render backend
-            const res = await axios.post(apiUrl('/api/auth/send-registration-otp/'), { email: formData.email });
+            const res = await axios.post(apiUrl('/api/auth/send-otp/'), { email: formData.email });
 
             // ✨ Hackathon Fallback: If backend returns a demo OTP because email failed, auto-fill it
             if (res.data.debug_otp && !res.data.email_dispatched) {

@@ -124,7 +124,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # NEW: Allows your Vercel frontend to talk to your Render backend without errors
 
 # CORS Configuration
+# CORS Configuration
 CORS_ALLOWED_ORIGINS = [
+    "https://gov-spark-git-main-aditi960s-projects.vercel.app",
     "https://gov-spark-one.vercel.app",
     "https://gov-spark.vercel.app",
     "http://localhost:5173",
@@ -132,6 +134,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://gov-spark-git-main-aditi960s-projects.vercel.app",
     "https://gov-spark-one.vercel.app",
     "https://gov-spark.vercel.app",
 ]
